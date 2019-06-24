@@ -46,14 +46,14 @@
                     </section>
                     <section>
                         <ul>
-                            <li>На каждую сущность свой эндпоит</li>
-                            <li>Типы запросов: POST GET PATCH PUT DELETE</li>
-                            <li>Строгий - жирный ответ</li>
-                            <li>Для выборки нужно мутить JSON-API</li>
-                            <li>Аргументы в гет параметрах</li>
-                            <li>Связаные данные? Разные эндпоиты(доп запросы) или жирный ответ, или еще больше эндпоитов</li>
-                            <li>Документация? - залезай в сорци и смотри</li>
-                            <li>Можно Swagger, но это просто красивый блокнот</li>
+                            <li class="fragment fade-down">На каждую сущность свой эндпоит</li>
+                            <li class="fragment fade-down">Типы запросов: POST GET PATCH PUT DELETE</li>
+                            <li class="fragment fade-down">Строгий - жирный ответ</li>
+                            <li class="fragment fade-down">Для выборки нужно мутить JSON-API</li>
+                            <li class="fragment fade-down">Аргументы в гет параметрах</li>
+                            <li class="fragment fade-down">Связаные данные? Разные эндпоиты(доп запросы) или жирный ответ, или еще больше эндпоитов</li>
+                            <li class="fragment fade-down">Документация? - залезай в сорци и смотри</li>
+                            <li class="fragment fade-down">Можно Swagger, но это просто красивый блокнот</li>
                         </ul>
                     </section>
                 </section>
@@ -63,9 +63,9 @@
                     </section>
                     <section>
                         <h3>Концепция</h3>
-                        <h5>Сервер объявляет о своих возможностях</h5>
+                        <h5 class="fragment fade-down">Сервер объявляет о своих возможностях</h5>
                         <img class="pic" src="./img/graphql.png" alt="#" style="width: 200px">
-                        <h5>Клиенте заявляет о своих потребностях</h5>
+                        <h5 class="fragment fade-down">Клиенте заявляет о своих потребностях</h5>
                     </section>
                     <section>
                         <h3>GraphQL — это</h3>
@@ -92,7 +92,7 @@
                     </section>
                     <section>
                         <h2>Output type</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             type Product {
                                 id: Int!
                                 title: String!
@@ -105,7 +105,7 @@
                     </section>
                     <section>
                         <h2>Input type</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             input Credentials {
                                 login: String!
                                 password: String!
@@ -114,7 +114,7 @@
                     </section>
                     <section>
                         <h2>Enum type</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             enum Role {
                                 ROOT
                                 ADMIN
@@ -125,7 +125,7 @@
                     </section>
                     <section>
                         <h2>Interface</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             interface NamedEntity {
                                 name: String
                             }
@@ -143,7 +143,7 @@
                     </section>
                     <section>
                         <h2>Unions</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             union SearchResult = Photo | Person
                             
                             type Person {
@@ -162,7 +162,7 @@
                     </section>
                     <section>
                         <h2>Scalars</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             # Default
                             scalar Int
                             scalar Float
@@ -177,7 +177,7 @@
                     </section>
                     <section>
                         <h2>Модификаторы типов</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             type SomeType {
                                 # Массив
                                 strings: [String]
@@ -192,7 +192,7 @@
                     </section>
                     <section>
                         <h2>Directives</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             directive @auth(roles: [Role]) on OBJECT | FIELD_DEFINITION
                             
                             type SomeType1 @auth(roles: [ADMIN, MANAGER]) {
@@ -208,7 +208,7 @@
                     </section>
                     <section>
                         <h2>Root Types</h2>
-                        <pre><code data-trim data-line-numbers>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
                             type Query {
                                 products(ids: Int): [Product]
                                 product(id: Int!): Product
@@ -352,11 +352,11 @@
                     </section>
                     <section>
                         <h3>Интроспекция — это описание всех типов в GraphQL-схеме</h3>
-                        <p>Это схема без resolve-методов</p>
-                        <p>Видно что есть, но не видно как реализовано</p>
-                        <p>Нужна для: IDE, линтеров, статического анализа</p>
-                        <p>Пример GraphQL IDE: <a href="https://github.com/graphql/graphiql">GraphiQL</a></p>
-                        <p>Нужна только на этапе разработки</p>
+                        <p class="fragment fade-down">Это схема без resolve-методов</p>
+                        <p class="fragment fade-down">Видно что есть, но не видно как реализовано</p>
+                        <p class="fragment fade-down">Нужна для: IDE, линтеров, статического анализа</p>
+                        <p class="fragment fade-down">Пример GraphQL IDE: <a href="https://github.com/graphql/graphiql">GraphiQL</a></p>
+                        <p class="fragment fade-down">Нужна только на этапе разработки</p>
                     </section>
                 </section>
                 <section>
@@ -372,14 +372,14 @@
                     </section>
                     <section>
                         <h3>Минимуи 2 пакета</h3>
-                        <img  class="pic" src="./img/diagram-ecosystem.svg" alt="#" style="width: 90vw">
+                        <img class="pic" src="./img/diagram-ecosystem.svg" alt="#" style="width: 90vw">
                     </section>
                     <section>
                         <h3>Инит и рантайм фазы</h3>
-                        <img  class="pic" src="./img/diagram-server.svg" alt="#" style="width: 90vw">
+                        <img class="pic" src="./img/diagram-server.svg" alt="#" style="width: 90vw">
                     </section>
                     <section>
-                        <img  class="pic" src="./img/graphql-rest-rpc.svg" alt="#" style="width: 600px">
+                        <img class="pic" src="./img/graphql-rest-rpc.svg" alt="#" style="width: 600px">
                         <p>Авторизация, оптимизация, кэширование – это за пределами GraphQL</p>
                     </section>
                     <section>
@@ -387,7 +387,7 @@
                     </section>
                     <section>
                         <p>Hello world schema (startup phase)</p>
-                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                        <pre><code data-trim data-line-numbers>
                             import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
 
                             const schema = new GraphQLSchema({
@@ -407,7 +407,7 @@
                     </section>
                     <section>
                         <p>Hello world schema (runtime phase)</p>
-                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                        <pre><code data-trim data-line-numbers>
                             import { graphql } from 'graphql';
                             import { schema } from './your-schema';
                             
@@ -419,7 +419,7 @@
                     </section>
                     <section>
                         <p>Server By Apollo</p>
-                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                        <pre><code data-trim data-line-numbers>
                             import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
                             import { ApolloServer } from 'apollo-server';
                                 
@@ -469,9 +469,7 @@
                             import graphqlHTTP from 'express-graphql'
                             
                             const app = express()
-
                             ...
-
                             app.use('/graphql', graphqlHTTP(req => async ({
                                 schema,
                                 graphiql: true,
@@ -482,9 +480,7 @@
                                     stack: error.stack ? error.stack.split('\n') : [],
                                 })
                             })))
-
                             ...
-                            
                             app.listen(3000)
                         </code></pre>
                     </section>
@@ -594,6 +590,10 @@
                 <section>
                     <section>
                         <h2>GraphQL на клиенте</h2>
+                        <div style="display: flex; align-items: center; justify-content: center">
+                            <img class="pic" src="./img/apollostack.svg" alt="#" style="margin: 20px">
+                            <img class="pic" src="./img/relay.svg" alt="#" style="margin: 20px">
+                        </div>
                     </section>
                 </section>
                 <section>
