@@ -1,0 +1,618 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Frontalk</title>
+
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <style>
+            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+                text-transform: none;
+            }
+            .reveal img.pic {
+                border: 0;
+                box-shadow: none;
+                background: none;
+            }
+        </style>
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <p style="font-size: 0.8em">Internal IT Stand Up by ITSumma</p>
+                    <h1>FRONTALK #3</h1>
+                    <p>Introduction to GraphQL</p>
+                </section>
+                <section>
+                    <section>
+                        <h1>REST API</h1>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>На каждую сущность свой эндпоит</li>
+                            <li>Типы запросов: POST GET PATCH PUT DELETE</li>
+                            <li>Строгий - жирный ответ</li>
+                            <li>Для выборки нужно мутить JSON-API</li>
+                            <li>Аргументы в гет параметрах</li>
+                            <li>Связаные данные? Разные эндпоиты(доп запросы) или жирный ответ, или еще больше эндпоитов</li>
+                            <li>Документация? - залезай в сорци и смотри</li>
+                            <li>Можно Swagger, но это просто красивый блокнот</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>GraphQL API</h1>
+                    </section>
+                    <section>
+                        <h3>Концепция</h3>
+                        <h5>Сервер объявляет о своих возможностях</h5>
+                        <img class="pic" src="./img/graphql.png" alt="#" style="width: 200px">
+                        <h5>Клиенте заявляет о своих потребностях</h5>
+                    </section>
+                    <section>
+                        <h3>GraphQL — это</h3>
+                        <ul>
+                            <li>не база данных</li>
+                            <li>не для передачи бинарных данных</li>
+                            <li>не только под NodeJS</li>
+                            <li>не только по HTTP</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Языковые средства GraphQL</h2>
+                        <ul>
+                            <li>schema definition language (SDL)</li>
+                            <li>язык запросов (query language)</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>GraphQL SDL</h2>
+                    </section>
+                    <section>
+                        <h2>Output type</h2>
+                        <pre><code data-trim data-line-numbers>
+                            type Product {
+                                id: Int!
+                                title: String!
+                                description: String!
+                                status: Int!
+                                categories: [ShopCategory]
+                                tags: [ShopTag]
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Input type</h2>
+                        <pre><code data-trim data-line-numbers>
+                            input Credentials {
+                                login: String!
+                                password: String!
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Enum type</h2>
+                        <pre><code data-trim data-line-numbers>
+                            enum Role {
+                                ROOT
+                                ADMIN
+                                MANAGER
+                                CUSTOMER
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Interface</h2>
+                        <pre><code data-trim data-line-numbers>
+                            interface NamedEntity {
+                                name: String
+                            }
+
+                            interface ValuedEntity {
+                                value: Int
+                            }
+
+                            type Business implements NamedEntity & ValuedEntity {
+                                name: String
+                                value: Int
+                                employeeCount: Int
+                            }
+                            </code></pre>
+                    </section>
+                    <section>
+                        <h2>Unions</h2>
+                        <pre><code data-trim data-line-numbers>
+                            union SearchResult = Photo | Person
+                            
+                            type Person {
+                                name: String
+                            }
+
+                            type Photo {
+                                height: Int
+                                width: Int
+                            }
+
+                            type SearchQuery {
+                                firstSearchResult: SearchResult
+                            }
+                            </code></pre>
+                    </section>
+                    <section>
+                        <h2>Scalars</h2>
+                        <pre><code data-trim data-line-numbers>
+                            # Default
+                            scalar Int
+                            scalar Float
+                            scalar String
+                            scalar Boolean
+                            scalar ID
+
+                            # Custom
+                            scalar Time
+                            scalar Url
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Модификаторы типов</h2>
+                        <pre><code data-trim data-line-numbers>
+                            type SomeType {
+                                # Массив
+                                strings: [String]
+                            
+                                # Non-Null
+                                nonNullString: String!
+                            
+                                # Комбинация модификаторов
+                                nonNullStrings: [String!]!
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Directives</h2>
+                        <pre><code data-trim data-line-numbers>
+                            directive @auth(roles: [Role]) on OBJECT | FIELD_DEFINITION
+                            
+                            type SomeType1 @auth(roles: [ADMIN, MANAGER]) {
+                                field1: String @auth(roles: [ADMIN])
+                                field2: String
+                            }
+
+                            type SomeType2 @auth(roles: [ADMIN]) {
+                                field1: String
+                                field2: String
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Root Types</h2>
+                        <pre><code data-trim data-line-numbers>
+                            type Query {
+                                products(ids: Int): [Product]
+                                product(id: Int!): Product
+                            }
+
+                            type Mutation {
+                                product(input: in_Product!, id: Int): Product
+                            }
+
+                            type Subscription {
+                                ...
+                            }
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>GraphQL Query Language</h2>
+                    </section>
+                    <section>
+                        <h2>Query</h2>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            query {
+                                products {
+                                    id
+                                    title
+                                    description
+                                    categories {
+                                        id
+                                        title
+                                        description
+                                    }
+                                }
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Mutation</h2>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            mutation {
+                                product(input: {
+                                    title: "product 123"
+                                    description: "description"
+                                }) {
+                                    id
+                                    title
+                                    description
+                                }
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Fragments</h2>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            {
+                                products {
+                                    ...product
+                                    categories {
+                                        ...category
+                                    }
+                                }
+                            }
+                              
+                            fragment product on Product {
+                                id
+                                title
+                                description
+                            }
+                            
+                            fragment category on ShopCategory {
+                                id
+                                title
+                                description
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Inline Fragment</h2>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            {
+                                products {
+                                    ... on Product
+                                    categories {
+                                        ... on ShopCategory
+                                    }
+                                }
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Multiple Query</h2>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            {
+                                products {
+                                    ... on Product
+                                    categories {
+                                        ... on ShopCategory
+                                    }
+                                }
+                                shopCategories {
+                                    ... on ShopCategory
+                                }
+                                shopTags {
+                                    ... on ShopTag
+                                }
+                                shopOrders {
+                                    ... on ShopOrder
+                                }
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Alias</h2>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            {
+                                list: categories(is_parent: true) {
+                                    ...category
+                                    subCategories {
+                                        ...category
+                                    }
+                                }
+                                tree: categories(is_parent: false) {
+                                    ...category
+                                    subCategories {
+                                        ...category
+                                    }
+                                }
+                            }
+
+                            fragment category on ShopCategory {
+                                id
+                                title
+                                description
+                            }
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>GraphQL Интроспекция</h2>
+                    </section>
+                    <section>
+                        <h3>Интроспекция — это описание всех типов в GraphQL-схеме</h3>
+                        <p>Это схема без resolve-методов</p>
+                        <p>Видно что есть, но не видно как реализовано</p>
+                        <p>Нужна для: IDE, линтеров, статического анализа</p>
+                        <p>Пример GraphQL IDE: <a href="https://github.com/graphql/graphiql">GraphiQL</a></p>
+                        <p>Нужна только на этапе разработки</p>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>GraphQL на сервере</h2>
+                    </section>
+                    <section>
+                        <h2></h2>
+                        <ol>
+                            <li>Описать схему данных</li>
+                            <li>Описать резолв функции</li>
+                        </ol>
+                    </section>
+                    <section>
+                        <h3>Минимуи 2 пакета</h3>
+                        <img  class="pic" src="./img/diagram-ecosystem.svg" alt="#" style="width: 90vw">
+                    </section>
+                    <section>
+                        <h3>Инит и рантайм фазы</h3>
+                        <img  class="pic" src="./img/diagram-server.svg" alt="#" style="width: 90vw">
+                    </section>
+                    <section>
+                        <img  class="pic" src="./img/graphql-rest-rpc.svg" alt="#" style="width: 600px">
+                        <p>Авторизация, оптимизация, кэширование – это за пределами GraphQL</p>
+                    </section>
+                    <section>
+                        <h3>Никакой магии, просто «строгий» вызывальщик функций</h3>
+                    </section>
+                    <section>
+                        <p>Hello world schema (startup phase)</p>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
+
+                            const schema = new GraphQLSchema({
+                                query: new GraphQLObjectType({
+                                    name: 'RootQueryType',
+                                    fields: {
+                                        hello: {
+                                            type: GraphQLString,
+                                            resolve: () => 'world',
+                                        }
+                                    }
+                                }),
+                                // mutation: { ... },
+                                // subscription: { ... },
+                            });
+                        </code></pre>
+                    </section>
+                    <section>
+                        <p>Hello world schema (runtime phase)</p>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            import { graphql } from 'graphql';
+                            import { schema } from './your-schema';
+                            
+                            const query = '{ hello }';
+                            const result = await graphql(schema, query);
+                            
+                            // returns: { data: { hello: "world" } }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <p>Server By Apollo</p>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
+                            import { ApolloServer } from 'apollo-server';
+                                
+                            const schema = new GraphQLSchema({
+                                query: new GraphQLObjectType({
+                                name: 'Query',
+                                fields: {
+                                    hello: {
+                                    type: GraphQLString,
+                                    args: {
+                                        name: { type: GraphQLString, defaultValue: 'world' },
+                                    },
+                                    resolve: (source, args, context) => {
+                                            return `Hello, ${args.name} from ip ${context.req.ip}`;
+                                        },
+                                    },
+                                },
+                                }),
+                            });
+                                
+                            const server = new ApolloServer({
+                                schema,
+                                context: ({ req }) => ({ req }),
+                                playground: true,
+                            });
+                                
+                            server
+                                .listen({
+                                    port: 5000,
+                                    endpoint: '/',
+                                    playground: '/playground',
+                                })
+                                .then(({ url }) => {
+                                    console.log(`🚀  Server ready at ${url}`);
+                                });
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>My server NodeJS</h2>
+                    </section>
+                    <section>
+                        <p>App.js</p>
+                        <pre><code data-trim data-line-numbers>
+                            import express from 'express'
+                            import graphqlHTTP from 'express-graphql'
+                            
+                            const app = express()
+
+                            ...
+
+                            app.use('/graphql', graphqlHTTP(req => async ({
+                                schema,
+                                graphiql: true,
+                                formatError: (error) => ({
+                                    message: error.message,
+                                    path: error.path,
+                                    locations: error.locations,
+                                    stack: error.stack ? error.stack.split('\n') : [],
+                                })
+                            })))
+
+                            ...
+                            
+                            app.listen(3000)
+                        </code></pre>
+                    </section>
+                    <section>
+                        <p>schema.js</p>
+                        <pre><code data-trim data-line-numbers>
+                            import { makeExecutableSchema } from 'graphql-tools'
+                            import { mergeTypes, mergeResolvers } from 'merge-graphql-schemas'
+                            
+                            import { DirectiveTypedef, AuthDirective } from '../directives'
+                            import { ProductTypeDef, ProductResolver } from './shop'
+                            
+                            const typeDefs = mergeTypes([
+                                DirectiveTypedef,
+                                ProductTypeDef
+                            ])
+                            
+                            const resolvers = mergeResolvers([
+                                ProductResolver
+                            ])
+                            
+                            export const schema = makeExecutableSchema({
+                                typeDefs,
+                                resolvers,
+                                schemaDirectives: {
+                                    auth: AuthDirective,
+                                }
+                            })
+                        </code></pre>
+                    </section>
+                    <section>
+                        <p>product.typedef.js</p>
+                        <pre><code class="language-graphql hljs" data-trim data-line-numbers>
+                            export default `
+                                type Product {
+                                    id: Int!
+                                    title: String!
+                                    subtitle: String!
+                                    offertitle: String!
+                                    description: String!
+                                    status: Int!
+                                    categories: [ShopCategory]!
+                                    tags: [ShopTag]!
+                                }
+                                
+                                input in_Product {
+                                    id: Int
+                                    title: String
+                                    subtitle: String
+                                    offertitle: String
+                                    description: String
+                                    status: Int
+                                    categories: [in_ShopCategory]
+                                    tags: [in_ShopTag]
+                                }
+                            
+                                type Query {
+                                    Products(ids: Int): [Product]
+                                    Product(id: Int!): Product
+                                }
+                            
+                                type Mutation {
+                                    Product(input: in_Product!, id: Int): Product
+                                }
+                            `                                
+                        </code></pre>
+                    </section>
+                    <section>
+                        <p>product.resolver.js</p>
+                        <pre><code data-trim data-line-numbers>
+                            import { getCustomRepository } from 'typeorm'
+                            import { schemaRelBySpec, schemaWhereByArgs } from '../../../utils'
+                            import { ProductRepository } from '../'
+                            
+                            const rp = () => getCustomRepository(ProductRepository)
+                                
+                            const relationSpec = ['items','items.options','categories','tags']
+                            
+                            const resolvers = {
+                                Query: {
+                                    Products: async (_, args, context, info) => {
+                                        const relations = schemaRelBySpec(info, relationSpec)
+                                        const where = schemaWhereByArgs(args)
+                                        return await rp().find({where, relations})
+                                    },
+                                    Product: async (_, { id }, context, info) => {
+                                        const relations = schemaRelBySpec(info, relationSpec)
+                                        return await rp().findOne(id, {relations})
+                                    },
+                                },
+                                Mutation: {
+                                    Product: async (_, { input, id }, context, info) => {
+                                        const relations = schemaRelBySpec(info, relationSpec)
+                                        if (id > 0) {
+                                            return await rp().patch(id, input, relations)
+                                        } else {
+                                            return await rp().post(input, relations)
+                                        }
+                                    },
+                                },
+                            }
+                            
+                            export default resolvers                 
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>GraphQL на клиенте</h2>
+                    </section>
+                </section>
+                <section>
+                    <h1>THX.</h1>
+                </section>
+            </div>
+        </div>
+
+        <script src="js/reveal.js"></script>
+
+        <script>
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true }
+                ]
+            });
+        </script>
+    </body>
+</html>
